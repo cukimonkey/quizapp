@@ -1,7 +1,7 @@
 import { useGlobalContext } from "../Context/Context";
 
 const SetupForm = () => {
-    const {quiz, handleChange, handleSubmit, error} = useGlobalContext;
+    const {quiz, handleChange, handleSubmit, error} = useGlobalContext();
     return (
         <main>
             <section className="quiz quiz-small">

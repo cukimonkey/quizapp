@@ -1,8 +1,8 @@
 import { useContext, useState, createContext } from "react";
-import axios from axios;
+import axios from 'axios';
 
 const table = {
-    sports: 19,
+    sports: 21,
     history: 23,
     politics: 24
 };
@@ -42,7 +42,7 @@ const AppProvider = ({children}) => {
         const response = await axios(url).catch((err) => console.log(err))
         if (response){
             const data = response.data.results;
-            if(data.length) {
+            if(data.length > 0) {
                 setQuestions(data);
                 setLoading(false);
                 setWaiting(false);
@@ -71,7 +71,7 @@ const AppProvider = ({children}) => {
     const nextQuestion = () => {
         setIndex((oldIndex) =>{
             const index = oldIndex +1;
-            if (index > oldIndex.length -1){
+            if (index > questions.length -1){
                 openModal()
                 return 0;
             } else {
@@ -93,8 +93,11 @@ const checkAnswers = (value) => {
 const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    setQuiz(...quiz, [name, value]);
-}
+    setQuiz((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
 
 const handleSubmit = (e) => {
         e.preventDefault();
@@ -107,15 +110,15 @@ const handleSubmit = (e) => {
 //pass on all the data we created
     return (
         <AppContext.Provider value={{
-            waiting, loading, questions, index, correct, error, modal, nextQuestion, checkAnswer, closeModal, quiz, handleChange, handleSubmit
+            waiting, loading, questions, index, correct, error, modal, nextQuestion, checkAnswers, closeModal, quiz, handleChange, handleSubmit
         }}>
             {children}
         </AppContext.Provider>
     );
 };
 
-export const useGlobalContext = () => {
+const useGlobalContext = () => {
     return useContext(AppContext);
 };
 
-export default {AppContext, AppProvider};
+export { AppContext, AppProvider, useGlobalContext };

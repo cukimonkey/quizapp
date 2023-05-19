@@ -3,10 +3,10 @@ import './App.css';
 import Modal from './Modal/Modal';
 import Loading from './Loading/LoadingScreen';
 import { useGlobalContext } from './Context/Context';
-import SetupForm from './Form/SetupForm';
+
 
 function App() {
-const {waiting, loading, questions, index, correct, nextQuestion, checkAnswer} = useGlobalContext;
+const {waiting, loading, questions, index, correct, nextQuestion, checkAnswers} = useGlobalContext();
 
 if(waiting){
   return (<SetupForm />)
@@ -30,17 +30,18 @@ if (tempIndex === 3) {
   return (
     //conditionally render components
     <main className="App">
+      <Modal />
         <section className='quiz'>
           <p className='correct-answers'>Correct answers: {correct}/{index}</p>
           <article className='container'>
             <h2 dangerouslySetInnerHTML={{__html:question}}/>
             <div className='btn-container'>
               {answers.map((answer, index) => {
-                retunr (
+                return (
                   <button 
                   key={index} 
                   className='answer-btn' 
-                  onClick={()=> checkAnswer(correct_answer === answer)}
+                  onClick={()=> checkAnswers(correct_answer === answer)}
                   dangerouslySetInnerHTML={{__html:answer}} 
                   />
                 )
