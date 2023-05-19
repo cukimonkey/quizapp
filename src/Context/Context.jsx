@@ -1,9 +1,9 @@
 import { useContext, useState, createContext } from "react";
-
+import axios from axios;
 
 const AppContext = createContext();
 
-const AppProvider = () => {
+const AppProvider = ({children}) => {
     //States: waiting, loading, questions, index, correct answers, error, 
     //quiz and modal to see if it's open or closed
 
@@ -28,6 +28,27 @@ const AppProvider = () => {
     })
     //modal
     const [modal, setModal] = useState(false)
+
+    //create a method to get the data from API
+    const fetchQuestions = async() => {
+        setLoading(true);
+        setWaiting(false);
+        const response = await axios('https://opentdb.com/api.php?amount=10').catch((err) => console.log(err))
+        if (response){
+            const data = response.data.results;
+            if(data.length) {
+                setQuestions(data);
+                setLoading(false);
+                setWaiting(false);
+                setError(false);
+            } else{
+                setWaiting(true);
+                setLoading(true);
+            }
+        } else{
+            setWaiting(true);
+        }
+    };
 
 //Using Trivial API to get the data - generate url on website to fetch the data
     
