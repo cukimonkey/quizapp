@@ -1,6 +1,12 @@
 import { useContext, useState, createContext } from "react";
 import axios from axios;
 
+const table = {
+    sports: 19,
+    history: 23,
+    politics: 24
+};
+
 const AppContext = createContext();
 
 const AppProvider = ({children}) => {
@@ -30,10 +36,10 @@ const AppProvider = ({children}) => {
     const [modal, setModal] = useState(false)
 
     //create a method to get the data from API
-    const fetchQuestions = async() => {
+    const fetchQuestions = async(url) => {
         setLoading(true);
         setWaiting(false);
-        const response = await axios('https://opentdb.com/api.php?amount=10').catch((err) => console.log(err))
+        const response = await axios(url).catch((err) => console.log(err))
         if (response){
             const data = response.data.results;
             if(data.length) {
@@ -49,7 +55,48 @@ const AppProvider = ({children}) => {
             setWaiting(true);
         }
     };
+//handle modal 
+    const openModal = () => {
+        setModal(true);
+    };
 
+    const closeModal = () => {
+        setModal(false);
+        setWaiting(true);
+        setCorrect(0);
+    };
+
+//handle data
+
+    const nextQuestion = () => {
+        setIndex((oldIndex) =>{
+            const index = oldIndex +1;
+            if (index > oldIndex.length -1){
+                openModal()
+                return 0;
+            } else {
+                return index;
+            }
+        });
+    };
+
+
+    //check the answers
+
+const checkAnswers = (value) => {
+    if(value) {
+        setCorrect((oldState) => oldState +1);
+    }
+    nextQuestion();
+};
+
+    const handleSubmit = () => {
+        error.preventDefault();
+        //detructure amount, difficulty and category
+        const {amount, difficulty, category} = quiz;
+        const url = `https://opentdb.com/api.php?amount=${amount}&difficulty=${difficulty}&category=${table[category]}&type=multiple`
+        fetchQuestions(url)
+    }
 //Using Trivial API to get the data - generate url on website to fetch the data
     
     return (
