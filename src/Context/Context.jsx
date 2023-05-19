@@ -90,17 +90,25 @@ const checkAnswers = (value) => {
     nextQuestion();
 };
 
-    const handleSubmit = () => {
-        error.preventDefault();
+const handleChange = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setQuiz(...quiz, [name, value]);
+}
+
+const handleSubmit = (e) => {
+        e.preventDefault();
         //detructure amount, difficulty and category
         const {amount, difficulty, category} = quiz;
         const url = `https://opentdb.com/api.php?amount=${amount}&difficulty=${difficulty}&category=${table[category]}&type=multiple`
         fetchQuestions(url)
     }
 //Using Trivial API to get the data - generate url on website to fetch the data
-    
+//pass on all the data we created
     return (
-        <AppContext.Provider>
+        <AppContext.Provider value={{
+            waiting, loading, questions, index, correct, error, modal, nextQuestion, checkAnswer, closeModal, quiz, handleChange, handleSubmit
+        }}>
             {children}
         </AppContext.Provider>
     );
