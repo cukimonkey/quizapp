@@ -1,7 +1,11 @@
-import { useState } from "react";
+import { useContext, useState, createContext } from "react";
+
+
+const AppContext = createContext();
 
 const AppProvider = () => {
-    //States: waiting, loading, questions, index, correct answers, error, quiz
+    //States: waiting, loading, questions, index, correct answers, error, 
+    //quiz and modal to see if it's open or closed
 
 
     //waiting
@@ -22,10 +26,20 @@ const AppProvider = () => {
         category: 'sports',
         difficulty: 'easy'
     })
+    //modal
+    const [modal, setModal] = useState(false)
 
-
+//Using Trivial API to get the data - generate url on website to fetch the data
     
     return (
-
+        <AppContext.Provider>
+            {children}
+        </AppContext.Provider>
     );
-},
+};
+
+export const useGlobalContext = () => {
+    return useContext(AppContext);
+};
+
+export default {AppContext, AppProvider};
