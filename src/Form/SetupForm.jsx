@@ -7,7 +7,14 @@ const SetupForm = () => {
                    
                     <div className="form-control">
                         <label htmlFor="amount">Number of Questions</label>
-                        <input type='number' name='amount' id='amount' className="form-input"/>
+                        <input 
+                        type='number' 
+                        name='amount' 
+                        id='amount' 
+                        className="form-input"
+                        min={5}
+                        max={50}
+                        />
                     </div>
                     
                     <div className="form-control">
