@@ -16,7 +16,7 @@ if(loading){
 }
 //now refactor our answers we receiving
 
-const {incorrect_answers, correct_answer, question} = question[index];
+const {incorrect_answers, correct_answer, question} = questions[index];
 let answers = [...incorrect_answers];
 const tempIndex = Math.floor(Math.random()*4);
 if (tempIndex === 3) {
@@ -47,7 +47,7 @@ if (tempIndex === 3) {
               })}
             </div>
           </article>
-          <button className='next-question'>Next Question</button>
+          <button className='next-question' onClick={nextQuestion}>Next Question</button>
         </section>
     </main>
   );

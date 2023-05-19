@@ -1,10 +1,14 @@
+import { useGlobalContext } from "../Context/Context";
+
+
 const Modal = () => {
+    const {modal, closeModal, correct, questions} = useGlobalContext
     return (
-        <div className="modal-container isOpen">
+        <div className={`${modal?'modal-container isOpen':'modal-container'}`}>
             <div className="modal-content">
                 <h2>Congrats</h2>
-                <p> You answered n questions correctly </p>
-                <button className="close-btn">Play again</button>
+                <p> You answered {((correct/questions.length)*100).toFixed(0)} %</p>
+                <button className="close-btn" onClick={closeModal}>Play again</button>
             </div>
         </div>
     );
